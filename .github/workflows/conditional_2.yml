@@ -1,4 +1,4 @@
-name: Conditional
+name: Conditional v2
 
 #https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows
 on:
@@ -12,8 +12,25 @@ on:
           - production
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.action }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Build
+        run: |
+          npm install
+          NAME="john doe" STAGE=${{ inputs.action }} node index.js
+
   deploy:
     runs-on: ubuntu-latest
+    needs: build
     environment: ${{ inputs.action }}
     steps:
       - name: Setup SSH
@@ -28,3 +45,13 @@ jobs:
         if: ${{ inputs.action == 'production' }}
         run: |
           echo "Ini hanya dieksekusi ketika di production saja"
+
+  notif:
+    runs-on: ubuntu-latest
+    needs: [build, deploy]
+    if: always()
+    environment: ${{ inputs.action }}
+    steps:
+      - name: Notif
+        run: |
+          echo "Ini akan dieksekusi menunggu job build dan deploy selesai, dan job ini akan dieksekusi meskipun ada salah satu job yg gagal"
