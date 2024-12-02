@@ -36,7 +36,7 @@ jobs:
       - name: Setup SSH
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ vars.SSH_HOST }}
+          host: ${{ vars.SSH_HOSTs }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: "curl ifconfig.me"
