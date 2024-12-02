@@ -1,13 +1,20 @@
-name: Secret And Variable
+name: Conditional
 
 #https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows
 on:
   workflow_dispatch:
+    inputs:
+      action:
+        type: choice
+        description: Deploy to ?
+        options:
+          - staging
+          - production
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: staging
+    environment: ${{ inputs.action }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -19,3 +26,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: "curl ifconfig.me"
+
+      - name: Production Only
+        if: ${{ inputs.action == 'production' }}
+        run: |
+          echo "Ini hanya dieksekusi ketika di production saja"
