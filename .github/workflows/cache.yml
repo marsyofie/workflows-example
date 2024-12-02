@@ -36,5 +36,5 @@ jobs:
 
       - name: Build
         run: |
-          npm install
+          npm ci
           NAME="john doe" node index.js
