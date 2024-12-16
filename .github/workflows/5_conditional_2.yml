@@ -6,6 +6,7 @@ on:
     inputs:
       action:
         type: choice
+        required: true
         description: Deploy to ?
         options:
           - staging
