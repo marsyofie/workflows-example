@@ -2,7 +2,7 @@ const axios = require('axios');
 
 let config = {
   method: 'get',
-  url: 'https://dev-one.sateklopo.com'
+  url: 'https://api-mono.sateklopo.com'
 };
 
 axios.request(config)
