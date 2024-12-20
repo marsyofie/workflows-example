@@ -26,7 +26,7 @@ jobs:
 
       - name: Build
         run: |
-          npm install
+          npm inkkk
           NAME="john doe" STAGE=${{ inputs.action }} node index.js
 
   deploy:
@@ -50,7 +50,7 @@ jobs:
   notif:
     runs-on: ubuntu-latest
     needs: [build, deploy]
-    if: always()
+    # if: always()
     environment: ${{ inputs.action }}
     steps:
       - name: Notif
